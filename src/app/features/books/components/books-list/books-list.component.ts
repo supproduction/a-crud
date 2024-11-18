@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input'
 import { MatListModule } from '@angular/material/list'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { Book } from '@shared/interface/responses'
-import { BehaviorSubject, debounceTime, distinctUntilChanged, map, merge, shareReplay, switchMap } from 'rxjs'
+import { BehaviorSubject, debounceTime, distinctUntilChanged, map, merge, of, shareReplay, switchMap, withLatestFrom } from 'rxjs'
 
 import { BooksService } from '../../services/books.service'
 import { BookFormComponent } from '../book-form/book-form.component'
@@ -51,8 +51,14 @@ export class BookListComponent {
 
   books$ = this.getList$.pipe(
     switchMap(() => this.booksService.get()),
-    switchMap((books) => this.search$.pipe().pipe(
-      map((query) => this.filterBooks(books, query)),
+    switchMap((books) => merge(
+      of(books).pipe(
+        withLatestFrom(this.searchQuery$),
+        map(([_ ,query]) => this.filterBooks(books, query)),
+      ),
+      this.search$.pipe().pipe(
+        map((query) => this.filterBooks(books, query)),
+      )
     )),
     shareReplay({ bufferSize: 1, refCount: true })
   );
