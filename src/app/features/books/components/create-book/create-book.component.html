@@ -1,0 +1,17 @@
+@let loading = adding$ | async;
+
+<div class="d-flex gap-sm flex-a-center">
+  <button [disabled]="loading" mat-raised-button (click)="openDialog()">Add new book</button>
+
+  @if (loading) {
+    <mat-spinner diameter="30" />
+  }
+</div>
+
+<ng-template #dialogTemplate>
+  <h3 mat-dialog-title>Create New Book</h3>
+
+  <mat-dialog-content>
+    <app-book-form (save)="save($event)"></app-book-form>
+  </mat-dialog-content>
+</ng-template>

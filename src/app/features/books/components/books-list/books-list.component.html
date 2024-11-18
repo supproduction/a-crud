@@ -1,0 +1,28 @@
+<div class="container">
+  <app-create-book />
+
+  <mat-form-field class="w-full py">
+    <input
+      matInput
+      (input)="searchHandler($event)"
+      placeholder="Enter book title or author"
+    />
+  </mat-form-field>
+
+  @if (initialLoading$ | async) {
+    <div class="flex-j-center d-flex">
+      <mat-spinner diameter="70" />
+    </div>
+  } @else {
+    <mat-list>
+      @for (book of books$ | async; track book.id) {
+        <app-books-list-item class="d-block" @itemAnimation [book]="book" />
+      } @empty {
+        <mat-list-item>
+          <span matListItemLine>There are no books.</span>
+        </mat-list-item>
+      }
+    </mat-list>
+  }
+</div>
+

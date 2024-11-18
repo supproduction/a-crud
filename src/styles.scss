@@ -1,0 +1,55 @@
+/* You can add global styles to this file, and also import other style files */
+
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.d-block {
+  display: block;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.container {
+  padding: 15px;
+  max-width: 630px;
+  margin: 0 auto;
+}
+
+.gap-sm {
+  gap: 15px;
+}
+
+.flex-a-center {
+  align-items: center;
+}
+
+.flex-j-center {
+  justify-content: center;
+}
+
+.py {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.image-preview {
+  max-width: 200px;
+  max-height: 300px;
+  object-fit: cover;
+  margin: 10px 0;
+}

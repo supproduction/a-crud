@@ -1,0 +1,44 @@
+@let loading = loading$ | async;
+
+<mat-list-item [disabled]="loading">
+  <mat-grid-list matListItemTitle cols="3" rowHeight="fit">
+    <mat-grid-tile
+      [colspan]="2"
+      [rowspan]="1"
+      >
+      <div class="w-full">
+        <button (click)="openDialog()" matListItemLine mat-button>{{ book.title }}</button>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile
+      [colspan]="1"
+      [rowspan]="2"
+    >
+      <button (click)="deleteHandler(book.id)" mat-mini-fab aria-label="Delete Book">
+        @if (loading) {
+          <mat-spinner diameter="20" />
+        } @else {
+          <mat-icon>delete</mat-icon>
+        }
+      </button>
+    </mat-grid-tile>
+
+    <mat-grid-tile
+      [colspan]="2"
+      [rowspan]="1"
+    >
+      <div class="w-full">
+        <span matListItemLine>{{ book.author }}, {{ book.year }}</span>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</mat-list-item>
+
+<ng-template #dialogTemplate>
+  <h3 mat-dialog-title>Update Book</h3>
+
+  <mat-dialog-content>
+    <app-book-form [book]="book" (save)="edit($event)"></app-book-form>
+  </mat-dialog-content>
+</ng-template>

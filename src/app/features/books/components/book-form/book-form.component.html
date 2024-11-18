@@ -1,0 +1,108 @@
+<form [formGroup]="form">
+  <mat-form-field class="w-full">
+    <mat-label>Book Title *</mat-label>
+    <input
+      matInput
+      formControlName="title"
+      placeholder="Enter book title"
+    />
+
+    <ng-container
+      *ngTemplateOutlet="error; context: { $implicit: form.get('title') }"
+    ></ng-container>
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Book Author *</mat-label>
+    <input
+      matInput
+      formControlName="author"
+      placeholder="Enter book author"
+    />
+
+    <ng-container
+      *ngTemplateOutlet="error; context: { $implicit: form.get('author') }"
+    ></ng-container>
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Book year *</mat-label>
+    <input
+      matInput
+      formControlName="year"
+      placeholder="Enter book year"
+      type="number"
+    />
+
+    <ng-container
+      *ngTemplateOutlet="error; context: { $implicit: form.get('year') }"
+    ></ng-container>
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Book description</mat-label>
+    <textarea
+      matInput
+      formControlName="description"
+      placeholder="Enter book description"
+    ></textarea>
+  </mat-form-field>
+
+  <div>
+    <label class="d-block" for="image-file">Cover Image</label>
+    <input
+      id="image-file"
+      type="file"
+      (change)="fileChangeHandler($event)"
+      accept="image/*"
+    />
+  </div>
+
+  @let image = form.get('image')?.value;
+
+  @if (image) {
+    <div class="flex-a-center d-flex gap-sm">
+      <img class="image-preview" [src]="image" alt="Cover Preview" />
+
+      <button (click)="deleteImage()" mat-mini-fab aria-label="Delete Image">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  }
+
+  <div class="py">
+    <button
+      [disabled]="form.invalid || form.pristine"
+      (click)="saveHandler()"
+      mat-raised-button
+    >
+      Save
+    </button>
+  </div>
+</form>
+
+<ng-template #error let-control>
+  @if (control.dirty) {
+    @if (control.hasError("required")) {
+      <mat-error>This field is required</mat-error>
+    }
+
+    @if (control.hasError("max")) {
+      <mat-error>The value should not be more then {{ control.getError("max").max }}</mat-error>
+    }
+
+    @if (control.hasError("maxlength")) {
+      <mat-error>
+        The length should be less then
+        {{ control.getError("maxlength").requiredLength }} characters
+      </mat-error>
+    }
+
+    @if (control.hasError("pattern")) {
+      <mat-error>
+        Text should start/end with space. Text should contain letters and/or
+        numbers and/or space.
+      </mat-error>
+    }
+  }
+</ng-template>
